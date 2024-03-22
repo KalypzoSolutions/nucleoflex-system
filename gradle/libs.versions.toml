@@ -1,0 +1,27 @@
+[versions]
+# APIs
+vpaper-api = "1.19.4-R0.1-SNAPSHOT"
+vvelcoity-api = "3.3.0-SNAPSHOT"
+vwaterfall-api = "1.20-R0.1-SNAPSHOT"
+vfawe-bom = "1.42"
+
+# Libraries
+vlitecommands = "3.2.0"
+vpacketevents = "2.2.1"
+vadventure = "4.16.0"
+# Wandoria Specific 
+vdialog-api = "1.2" #https://repo.wandoria.net/#/snapshots/net/wandoria/api/DialogAPI/
+
+[libraries]
+fawe = { group = "com.intellectualsites.bom", name = "bom-newest", version.ref = "vfawe-bom" }
+paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "vpaper-api" }
+litecommands = { group = "dev.rollczi", name = "litecommands-bukkit", version.ref =  "vlitecommands" }
+dialog-api = {group = "net.wandoria.api", name = "dialog-api", version.ref = "vdialog-api"}
+packetevents-spigot = {group = "com.github.retrooper.packetevents", name ="spigot", version.ref ="vpacketevents"}
+packetevents-bungee = {group = "com.github.retrooper.packetevents", name ="bungeecord", version.ref ="vpacketevents"}
+waterfall = { group = "io.github.waterfallmc", name = "waterfall-api", version.ref = "vwaterfall-api"}
+velocity = { group = "com.velocitypowered", name = "velocity-api", version.ref = "vvelcoity-api" }
+adventure = { group = "net.kyori", name = "adventure-api", version.ref = "vadventure" }
+
+[plugins]
+shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
