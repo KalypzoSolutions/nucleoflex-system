@@ -1,4 +1,4 @@
-package it.einjojo.nucleoflex.player;
+package it.einjojo.nucleoflex.api.player;
 
 import java.util.Optional;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package it.einjojo.nucleoflex.messages;
+package it.einjojo.nucleoflex.api.messages;
 
 import net.kyori.adventure.text.Component;
 

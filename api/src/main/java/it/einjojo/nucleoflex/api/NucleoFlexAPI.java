@@ -1,8 +1,8 @@
-package it.einjojo.nucleoflex;
+package it.einjojo.nucleoflex.api;
 
-import it.einjojo.nucleoflex.messages.MessageManager;
-import it.einjojo.nucleoflex.player.PlayerManager;
-import it.einjojo.nucleoflex.server.ServerNetworkManager;
+import it.einjojo.nucleoflex.api.messages.MessageManager;
+import it.einjojo.nucleoflex.api.player.PlayerManager;
+import it.einjojo.nucleoflex.api.server.ServerNetworkManager;
 
 /**
  * NucleoFlexAPI

@@ -1,4 +1,4 @@
-package it.einjojo.nucleoflex.command;
+package it.einjojo.nucleoflex.api.command;
 
 public interface CommandExecutor {
 

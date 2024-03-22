@@ -1,4 +1,4 @@
-package it.einjojo.nucleoflex.world;
+package it.einjojo.nucleoflex.api.world;
 
 /**
  * Represents a position in the world.

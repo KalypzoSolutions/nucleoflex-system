@@ -12,3 +12,4 @@ plugins {
 
 rootProject.name = "nucleoflex"
 include("api")
+include("core")

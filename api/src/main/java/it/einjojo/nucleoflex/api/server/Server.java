@@ -1,6 +1,6 @@
-package it.einjojo.nucleoflex.server;
+package it.einjojo.nucleoflex.api.server;
 
-import it.einjojo.nucleoflex.player.NFPlayer;
+import it.einjojo.nucleoflex.api.player.NFPlayer;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -14,7 +14,7 @@ public interface Server {
     /**
      * @return the name of the server
      */
-    String name();
+    String serverName();
 
     /**
      * @return amount of players connected to the server

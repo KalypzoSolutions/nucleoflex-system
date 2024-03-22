@@ -1,9 +1,9 @@
-package it.einjojo.nucleoflex.player;
+package it.einjojo.nucleoflex.api.player;
 
-import it.einjojo.nucleoflex.command.CommandExecutor;
-import it.einjojo.nucleoflex.server.ProxyServer;
-import it.einjojo.nucleoflex.server.Server;
-import it.einjojo.nucleoflex.world.Position;
+import it.einjojo.nucleoflex.api.world.Position;
+import it.einjojo.nucleoflex.api.command.CommandExecutor;
+import it.einjojo.nucleoflex.api.server.ProxyServer;
+import it.einjojo.nucleoflex.api.server.Server;
 import net.kyori.adventure.text.Component;
 
 import java.util.Optional;
@@ -40,6 +40,12 @@ public interface NFPlayer extends NFOfflinePlayer, CommandExecutor {
      * @return the position of the player.
      */
     CompletableFuture<Position> positionAsync();
+
+    /**
+     * Teleports the player to the given position.
+     * @param position the position to teleport the player to.
+     */
+    void teleport(Position position);
 
     /**
      * @param message the message to send.
