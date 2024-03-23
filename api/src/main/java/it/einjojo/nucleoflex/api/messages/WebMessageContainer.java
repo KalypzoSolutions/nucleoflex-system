@@ -15,16 +15,16 @@ import java.util.Map;
 
 public class WebMessageContainer implements MessageContainer {
     private final URL webUrl;
-    private final MessagePipeline pipeline;
+    private final SimpleMessagePipeline pipeline;
     private final Map<String, String> messages;
     private MiniMessage miniMessage;
 
 
-    public WebMessageContainer(String webUrl, MessagePipeline pipeline) throws MalformedURLException {
+    public WebMessageContainer(String webUrl, SimpleMessagePipeline pipeline) throws MalformedURLException {
         this(new URL(webUrl), pipeline, null);
     }
 
-    public WebMessageContainer(URL webUrl, MessagePipeline pipeline, MiniMessage miniMessage) {
+    public WebMessageContainer(URL webUrl, SimpleMessagePipeline pipeline, MiniMessage miniMessage) {
         this.webUrl = webUrl;
         this.pipeline = pipeline;
         this.miniMessage = miniMessage;
@@ -41,7 +41,7 @@ public class WebMessageContainer implements MessageContainer {
                 builder.append(line);
             }
             reader.close();
-            messages.putAll(pipeline.deserialize(builder.toString()));
+            messages.putAll(pipeline.toMap(builder.toString()));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
