@@ -1,6 +1,7 @@
 package it.einjojo.nucleoflex.api.server;
 
 import it.einjojo.nucleoflex.api.player.NFPlayer;
+import it.einjojo.nucleoflex.api.player.PlayerContainer;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -10,31 +11,16 @@ import java.util.concurrent.CompletableFuture;
  * Server interface
  * Represents a server in the network
  */
-public interface Server {
+public interface Server extends PlayerContainer {
     /**
      * @return the name of the server
      */
     String serverName();
 
     /**
-     * @return amount of players connected to the server
-     */
-    int playerCount();
-
-    /**
      * @return the maximum amount of players that can be connected to the server
      */
     int maxPlayers();
-
-    /**
-     * @return the players connected to the server
-     */
-    Collection<NFPlayer> players();
-
-    /**
-     * @return the players connected to the server asynchronously
-     */
-    CompletableFuture<Collection<NFPlayer>> playersAsync();
 
     /**
      * Connects a player to the server

@@ -50,4 +50,12 @@ public interface NFOfflinePlayer {
      */
     CompletableFuture<PlayerBalance> economyAsync();
 
+    /**
+     * @param permission the permission to check.
+     * @return true if the player has the given permission.
+     */
+    boolean hasPermission(String permission);
+
+
+
 }

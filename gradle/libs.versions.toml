@@ -9,6 +9,8 @@ vfawe-bom = "1.42"
 vlitecommands = "3.2.0"
 vpacketevents = "2.2.1"
 vadventure = "4.16.0"
+vguava = "33.1.0-jre"
+vcaffeine = "3.1.8"
 # Wandoria Specific 
 vdialog-api = "1.2" #https://repo.wandoria.net/#/snapshots/net/wandoria/api/DialogAPI/
 
@@ -22,6 +24,8 @@ packetevents-bungee = {group = "com.github.retrooper.packetevents", name ="bunge
 waterfall = { group = "io.github.waterfallmc", name = "waterfall-api", version.ref = "vwaterfall-api"}
 velocity = { group = "com.velocitypowered", name = "velocity-api", version.ref = "vvelcoity-api" }
 adventure = { group = "net.kyori", name = "adventure-api", version.ref = "vadventure" }
+guava = { group = "com.google.guava", name = "guava", version.ref = "vguava"}
+caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "vcaffeine"}
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }

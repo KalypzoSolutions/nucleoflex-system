@@ -1,19 +1,11 @@
 plugins {
-    id("java")
+    id("java-library")
 }
 
-group = "it.einjojo.nucleoflex"
-version = "1.0"
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    api(project(":api"))
+    api(libs.guava)
+    api(libs.caffeine)
 }
 
-tasks.test {
-    useJUnitPlatform()
-}

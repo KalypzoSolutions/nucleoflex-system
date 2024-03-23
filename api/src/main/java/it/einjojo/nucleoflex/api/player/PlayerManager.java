@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * PlayerManager interface
  */
-public interface PlayerManager {
+public interface PlayerManager extends PlayerContainer {
     Optional<NFPlayer> player(UUID uniqueId);
 
     CompletableFuture<Optional<NFPlayer>> playerAsync(UUID uniqueId);
@@ -23,6 +23,13 @@ public interface PlayerManager {
     Optional<NFOfflinePlayer> offlinePlayerByName(String name);
 
     CompletableFuture<Optional<NFOfflinePlayer>> offlinePlayerByNameAsync(String name);
+
+    boolean containsPlayer(UUID playerUUID);
+
+    boolean containsPlayer(String playerName);
+
+
+
 
     void update(NFOfflinePlayer player);
 
