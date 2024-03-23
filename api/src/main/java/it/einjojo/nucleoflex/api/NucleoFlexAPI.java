@@ -1,6 +1,6 @@
 package it.einjojo.nucleoflex.api;
 
-import it.einjojo.nucleoflex.api.messages.MessageManager;
+import it.einjojo.nucleoflex.api.messages.MessageContainer;
 import it.einjojo.nucleoflex.api.player.PlayerManager;
 import it.einjojo.nucleoflex.api.server.ServerNetworkManager;
 
@@ -11,7 +11,7 @@ public interface NucleoFlexAPI {
     /**
      * @return the message manager that manages the messages
      */
-    MessageManager messageManager();
+    MessageContainer messageManager();
 
     /**
      * @return the player manager that manages the players

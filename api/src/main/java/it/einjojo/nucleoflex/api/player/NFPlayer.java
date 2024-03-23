@@ -1,9 +1,9 @@
 package it.einjojo.nucleoflex.api.player;
 
-import it.einjojo.nucleoflex.api.world.Position;
 import it.einjojo.nucleoflex.api.command.CommandExecutor;
 import it.einjojo.nucleoflex.api.server.ProxyServer;
 import it.einjojo.nucleoflex.api.server.Server;
+import it.einjojo.nucleoflex.api.world.Position;
 import net.kyori.adventure.text.Component;
 
 import java.util.Optional;

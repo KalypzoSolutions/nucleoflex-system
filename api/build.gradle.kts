@@ -5,4 +5,5 @@ plugins {
 
 dependencies {
     compileOnly(libs.adventure)
+    compileOnly(libs.minimessage)
 }

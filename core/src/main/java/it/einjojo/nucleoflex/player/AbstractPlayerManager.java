@@ -2,7 +2,6 @@ package it.einjojo.nucleoflex.player;
 
 import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.google.common.base.Preconditions;
 import it.einjojo.nucleoflex.api.player.NFOfflinePlayer;
 import it.einjojo.nucleoflex.api.player.NFPlayer;
 import it.einjojo.nucleoflex.api.player.PlayerManager;
@@ -34,6 +33,9 @@ public abstract class AbstractPlayerManager implements PlayerManager {
 
     abstract CompletableFuture<NFOfflinePlayer> loadOfflinePlayer(UUID uniqueId, Executor executor);
 
+
+
+    // Cached stuff
     @Override
     public Optional<NFPlayer> player(UUID uniqueId) {
         if (uniqueId == null) {
@@ -65,6 +67,8 @@ public abstract class AbstractPlayerManager implements PlayerManager {
         }
         return offlinePlayerCache.get(uniqueId).thenApply(Optional::ofNullable);
     }
+
+
 
     // NAME CACHE USAGE SHORTCUTS
     @Override

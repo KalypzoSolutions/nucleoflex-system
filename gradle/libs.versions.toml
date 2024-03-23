@@ -24,6 +24,7 @@ packetevents-bungee = {group = "com.github.retrooper.packetevents", name ="bunge
 waterfall = { group = "io.github.waterfallmc", name = "waterfall-api", version.ref = "vwaterfall-api"}
 velocity = { group = "com.velocitypowered", name = "velocity-api", version.ref = "vvelcoity-api" }
 adventure = { group = "net.kyori", name = "adventure-api", version.ref = "vadventure" }
+minimessage = {group = "net.kyori", name = "adventure-text-minimessage", version.ref = "vadventure"}
 guava = { group = "com.google.guava", name = "guava", version.ref = "vguava"}
 caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "vcaffeine"}
 

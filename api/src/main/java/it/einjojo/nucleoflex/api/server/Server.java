@@ -1,11 +1,8 @@
 package it.einjojo.nucleoflex.api.server;
 
-import it.einjojo.nucleoflex.api.player.NFPlayer;
 import it.einjojo.nucleoflex.api.player.PlayerContainer;
 
-import java.util.Collection;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Server interface
