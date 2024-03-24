@@ -1,14 +1,14 @@
-package it.einjojo.nucleoflex.server;
+package it.einjojo.nucleoflex.api.impl;
 
 import it.einjojo.nucleoflex.api.player.NFPlayer;
 import it.einjojo.nucleoflex.api.server.Group;
 import it.einjojo.nucleoflex.api.server.Server;
 import it.einjojo.nucleoflex.player.PlayerConnectionHandler;
+import it.einjojo.nucleoflex.player.PlayerNameCache;
 
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 public class ImplServer implements Server {
 
@@ -16,6 +16,7 @@ public class ImplServer implements Server {
     private final String groupName;
 
     private transient PlayerConnectionHandler playerConnectionHandler;
+    private transient PlayerNameCache playerNameCache;
 
     protected ImplServer(String serverName, String groupName) {
         this.serverName = serverName;
@@ -53,38 +54,17 @@ public class ImplServer implements Server {
         return false;
     }
 
-    @Override
-    public boolean containsPlayer(String playerName) {
-        return false;
-    }
 
     @Override
     public Optional<NFPlayer> player(UUID playerUUID) {
         return Optional.empty();
     }
 
-    @Override
-    public Optional<NFPlayer> playerByName(String playerName) {
-        return Optional.empty();
-    }
-
-    @Override
-    public CompletableFuture<Optional<NFPlayer>> playerAsync(UUID playerUUID) {
-        return null;
-    }
-
-    @Override
-    public CompletableFuture<Optional<NFPlayer>> playerByNameAsync(String playerName) {
-        return null;
-    }
 
     @Override
     public Collection<NFPlayer> players() {
         return null;
     }
 
-    @Override
-    public CompletableFuture<Collection<NFPlayer>> playersAsync() {
-        return null;
-    }
+
 }
