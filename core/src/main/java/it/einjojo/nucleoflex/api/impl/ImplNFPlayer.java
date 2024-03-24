@@ -8,7 +8,7 @@ import it.einjojo.nucleoflex.api.world.Position;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public class ImplNFPlayer extends ImplNFOfflinePlayer implements NFPlayer {
+public class ImplNFPlayer extends ImplNFOfflinePlayer implements NFPlayer { //TODO
     public ImplNFPlayer(UUID uuid, String name, long firstJoin, long lastJoin) {
         super(uuid, name, firstJoin, lastJoin);
     }
