@@ -15,12 +15,18 @@ public interface Server extends PlayerContainer {
     String serverName();
 
     /**
-     * @return the maximum amount of players that can be connected to the server
+     * @return the name of the group to which the server belongs
      */
-    int maxPlayers();
+    String groupName();
+
+    /**
+     * @return the group to which the server belongs
+     */
+    Group group();
 
     /**
      * Connects a player to the server
+     *
      * @param playerUniqueId the UUID of the player to connect
      */
     void connect(UUID playerUniqueId);

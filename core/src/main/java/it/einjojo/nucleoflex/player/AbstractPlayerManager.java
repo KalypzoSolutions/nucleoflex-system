@@ -12,8 +12,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
+
 /**
- * Uses playerNameCache
+ * Abstract class for managing players, both online and offline.
+ * This class provides the basic functionality for loading and caching player data.
  */
 public abstract class AbstractPlayerManager implements PlayerManager {
 
@@ -24,18 +26,32 @@ public abstract class AbstractPlayerManager implements PlayerManager {
     protected final AsyncLoadingCache<UUID, NFOfflinePlayer> offlinePlayerCache = Caffeine.newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
             .buildAsync(this::loadOfflinePlayer);
-
+    /**
+     * Constructor for the AbstractPlayerManager class.
+     * @param playerNameCache The cache for player names.
+     */
     protected AbstractPlayerManager(PlayerNameCache playerNameCache) {
         this.playerNameCache = playerNameCache;
     }
 
+    /**
+     * Abstract method for loading a player.
+     * @param uniqueId The unique ID of the player.
+     * @param executor The executor to run the loading task.
+     * @return A CompletableFuture that completes with the loaded player.
+     */
     abstract CompletableFuture<NFPlayer> loadPlayer(UUID uniqueId, Executor executor);
-
+    /**
+     * Abstract method for loading an offline player.
+     * @param uniqueId The unique ID of the player.
+     * @param executor The executor to run the loading task.
+     * @return A CompletableFuture that completes with the loaded offline player.
+     */
     abstract CompletableFuture<NFOfflinePlayer> loadOfflinePlayer(UUID uniqueId, Executor executor);
 
 
 
-    // Cached stuff
+    // USING CACHE
     @Override
     public Optional<NFPlayer> player(UUID uniqueId) {
         if (uniqueId == null) {
@@ -70,7 +86,7 @@ public abstract class AbstractPlayerManager implements PlayerManager {
 
 
 
-    // NAME CACHE USAGE SHORTCUTS
+    // USING THE PLAYER NAME CACHE TO GET THE UUID AND THEN GET THE PLAYER
     @Override
     public Optional<NFPlayer> playerByName(String name) {
         var optionalUUID = playerNameCache.getUniqueId(name);
@@ -106,7 +122,6 @@ public abstract class AbstractPlayerManager implements PlayerManager {
         }
         return offlinePlayerAsync(optionalUUID.get());
     }
-    // NAME CACHE USAGE SHORTCUTS END
 
 
 }
