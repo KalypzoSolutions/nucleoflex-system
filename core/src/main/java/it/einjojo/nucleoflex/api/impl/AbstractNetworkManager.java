@@ -1,4 +1,4 @@
-package it.einjojo.nucleoflex.server;
+package it.einjojo.nucleoflex.api.impl;
 
 import it.einjojo.nucleoflex.api.server.Server;
 import it.einjojo.nucleoflex.api.server.NetworkManager;
@@ -25,31 +25,6 @@ public abstract class AbstractNetworkManager implements NetworkManager {
         this.factory = factory;
     }
 
-    /**
-     * Abstract method for registering a server.
-     * @param server The Server object to be registered.
-     */
-    abstract void registerServer(Server server);
 
-    /**
-     * Abstract method for unregistering a server.
-     * @param server The Server object to be unregistered.
-     */
-    abstract void unregisterServer(Server server);
 
-    /**
-     * Checks if a server is registered.
-     * @param server The Server object to check.
-     * @return true if the server is registered, false otherwise.
-     */
-    public boolean isServerRegistered(Server server) {
-        return isServerRegistered(server.serverName());
-    }
-
-    /**
-     * Abstract method for checking if a server is registered by its name.
-     * @param serverName The name of the server to check.
-     * @return true if the server is registered, false otherwise.
-     */
-    abstract boolean isServerRegistered(String serverName);
 }

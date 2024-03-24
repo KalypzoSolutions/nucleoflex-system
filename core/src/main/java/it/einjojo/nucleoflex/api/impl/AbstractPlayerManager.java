@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import it.einjojo.nucleoflex.api.player.NFOfflinePlayer;
 import it.einjojo.nucleoflex.api.player.NFPlayer;
+import it.einjojo.nucleoflex.api.player.PlayerContainerManager;
 import it.einjojo.nucleoflex.api.player.PlayerManager;
 import it.einjojo.nucleoflex.player.PlayerNameCache;
 
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  * Abstract class for managing players, both online and offline.
  * This class provides the basic functionality for loading and caching player data.
  */
-public abstract class AbstractPlayerManager implements PlayerManager {
+public abstract class AbstractPlayerManager implements PlayerManager, PlayerContainerManager {
 
     protected final PlayerNameCache playerNameCache;
     protected final AsyncLoadingCache<UUID, NFPlayer> onlinePlayerCache = Caffeine.newBuilder()
