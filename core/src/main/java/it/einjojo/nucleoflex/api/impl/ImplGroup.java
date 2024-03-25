@@ -1,12 +1,14 @@
 package it.einjojo.nucleoflex.api.impl;
 
 import com.google.common.collect.ImmutableSet;
-import it.einjojo.nucleoflex.api.InternalAPI;
 import it.einjojo.nucleoflex.api.command.CommandExecutor;
 import it.einjojo.nucleoflex.api.player.NFPlayer;
 import it.einjojo.nucleoflex.api.player.PlayerContainer;
+import it.einjojo.nucleoflex.api.player.PlayerContainerManager;
 import it.einjojo.nucleoflex.api.server.Group;
+import it.einjojo.nucleoflex.api.server.NetworkManager;
 import it.einjojo.nucleoflex.api.server.Server;
+import it.einjojo.nucleoflex.command.CommandExecutorFactory;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
@@ -17,14 +19,18 @@ import java.util.UUID;
 public class ImplGroup implements Group {
     private final String groupName;
     private final Set<String> servers;
-    private final InternalAPI api;
+    private final PlayerContainerManager playerContainerManager;
+    private final NetworkManager networkManager;
+    private final CommandExecutorFactory commandExecutorFactory;
     private WeakReference<CommandExecutor> commandExecutor = new WeakReference<>(null);
 
 
-    public ImplGroup(String groupName, Set<String> servers, InternalAPI api) {
+    public ImplGroup(String groupName, Set<String> servers, PlayerContainerManager playerContainerManager, NetworkManager networkManager, CommandExecutorFactory commandExecutorFactory) {
         this.groupName = groupName;
         this.servers = servers;
-        this.api = api;
+        this.playerContainerManager = playerContainerManager;
+        this.networkManager = networkManager;
+        this.commandExecutorFactory = commandExecutorFactory;
     }
 
 
@@ -43,7 +49,7 @@ public class ImplGroup implements Group {
         final Server[] serverArray = new Server[servers.size()];
         int index = 0;
         for (String serverName : servers) {
-            Optional<Server> optionalServer = api.networkManager().serverByName(serverName);
+            Optional<Server> optionalServer = networkManager.serverByName(serverName);
             if (optionalServer.isPresent()) {
                 serverArray[index] = optionalServer.get();
                 index++;
@@ -63,7 +69,7 @@ public class ImplGroup implements Group {
     public void executeCommand(String command) {
         CommandExecutor content = commandExecutor.get();
         if (content == null) {
-            content = api.commandExecutorFactory().groupExecutor(groupName());
+            content = commandExecutorFactory.groupExecutor(groupName());
             commandExecutor = new WeakReference<>(content);
         }
         content.executeCommand(command);
@@ -90,6 +96,6 @@ public class ImplGroup implements Group {
     }
 
     protected PlayerContainer playerContainer() {
-        return api.playerContainerManager().groupContainer(groupName());
+        return playerContainerManager.groupContainer(groupName());
     }
 }
