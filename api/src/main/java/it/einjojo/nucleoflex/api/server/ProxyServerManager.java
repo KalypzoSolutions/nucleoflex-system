@@ -28,5 +28,9 @@ public interface ProxyServerManager {
      */
     CompletableFuture<Collection<ProxyServer>> proxiesAsync();
 
+    void registerProxy(ProxyServer proxyServer);
+
+    void unregisterProxy(String proxyName);
+
 }
 

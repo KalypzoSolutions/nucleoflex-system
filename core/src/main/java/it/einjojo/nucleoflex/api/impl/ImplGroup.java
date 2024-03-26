@@ -1,16 +1,14 @@
 package it.einjojo.nucleoflex.api.impl;
 
 import com.google.common.collect.ImmutableSet;
-import it.einjojo.nucleoflex.api.command.CommandExecutor;
 import it.einjojo.nucleoflex.api.player.NFPlayer;
 import it.einjojo.nucleoflex.api.player.PlayerContainer;
 import it.einjojo.nucleoflex.api.player.PlayerContainerManager;
 import it.einjojo.nucleoflex.api.server.Group;
 import it.einjojo.nucleoflex.api.server.NetworkManager;
 import it.einjojo.nucleoflex.api.server.Server;
-import it.einjojo.nucleoflex.command.CommandExecutorFactory;
+import it.einjojo.nucleoflex.command.AbstractCommandMessageHandler;
 
-import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
@@ -21,16 +19,15 @@ public class ImplGroup implements Group {
     private final Set<String> servers;
     private final PlayerContainerManager playerContainerManager;
     private final NetworkManager networkManager;
-    private final CommandExecutorFactory commandExecutorFactory;
-    private WeakReference<CommandExecutor> commandExecutor = new WeakReference<>(null);
+    private final AbstractCommandMessageHandler commandMessageHandler;
 
 
-    public ImplGroup(String groupName, Set<String> servers, PlayerContainerManager playerContainerManager, NetworkManager networkManager, CommandExecutorFactory commandExecutorFactory) {
+    public ImplGroup(String groupName, Set<String> servers, PlayerContainerManager playerContainerManager, NetworkManager networkManager, AbstractCommandMessageHandler commandHandler) {
         this.groupName = groupName;
         this.servers = servers;
         this.playerContainerManager = playerContainerManager;
         this.networkManager = networkManager;
-        this.commandExecutorFactory = commandExecutorFactory;
+        this.commandMessageHandler = commandHandler;
     }
 
 
@@ -67,12 +64,7 @@ public class ImplGroup implements Group {
 
     @Override
     public void executeCommand(String command) {
-        CommandExecutor content = commandExecutor.get();
-        if (content == null) {
-            content = commandExecutorFactory.groupExecutor(groupName());
-            commandExecutor = new WeakReference<>(content);
-        }
-        content.executeCommand(command);
+        commandMessageHandler.sendGroupCommand(groupName(), command);
     }
 
     @Override
