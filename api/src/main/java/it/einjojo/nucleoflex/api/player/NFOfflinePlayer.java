@@ -32,5 +32,7 @@ public interface NFOfflinePlayer extends PlayerDataSnapshot {
      */
     boolean hasPermission(String permission);
 
+    CompletableFuture<Boolean> hasPermissionAsync(String permission);
+
 
 }

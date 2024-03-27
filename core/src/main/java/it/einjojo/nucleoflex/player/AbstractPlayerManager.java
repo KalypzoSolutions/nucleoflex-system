@@ -1,4 +1,4 @@
-package it.einjojo.nucleoflex.api.impl;
+package it.einjojo.nucleoflex.player;
 
 import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;

@@ -1,6 +1,5 @@
 package it.einjojo.nucleoflex.player;
 
-import it.einjojo.nucleoflex.api.impl.AbstractPlayerManager;
 import it.einjojo.nucleoflex.api.player.NFOfflinePlayer;
 import it.einjojo.nucleoflex.api.player.NFPlayer;
 import it.einjojo.nucleoflex.api.player.PlayerContainer;

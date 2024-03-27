@@ -4,16 +4,22 @@ vpaper-api = "1.19.4-R0.1-SNAPSHOT"
 vvelcoity-api = "3.3.0-SNAPSHOT"
 vwaterfall-api = "1.20-R0.1-SNAPSHOT"
 vfawe-bom = "1.42"
+voraxen = "1.168.0"
+vhusksync = "3.3.1"
+vcloudnet = "4.0.0-RC9"
+vluckperms = "5.4"
+
 
 # Libraries
-vlitecommands = "3.2.0"
 vpacketevents = "2.2.1"
+vlitecommands = "3.2.0"
 vadventure = "4.16.0"
 vguava = "33.1.0-jre"
 vgson = "2.10.1"
 vcaffeine = "3.1.8"
-vjedis = "5.0.0"
-# Wandoria Specific 
+vjedis = "5.1.0"
+
+# Wandoria Specific
 vdialog-api = "1.2" #https://repo.wandoria.net/#/snapshots/net/wandoria/api/DialogAPI/
 
 [libraries]
@@ -31,6 +37,11 @@ guava = { group = "com.google.guava", name = "guava", version.ref = "vguava" }
 caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "vcaffeine" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "vgson" }
 jedis = { group = "redis.clients", name = "jedis", version.ref = "vjedis" }
+cloudnetbridge = { group = "eu.cloudnetservice.cloudnet", name = "bridge", version.ref = "vcloudnet" }
+cloudnetwrapperjvm = { group = "eu.cloudnetservice.cloudnet", name = "wrapper-jvm", version.ref = "vcloudnet" }
+luckperms = { group = "net.luckperms", name = "api", version.ref = "vluckperms" }
+
+
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }

@@ -10,5 +10,6 @@ dependencies {
     implementation(libs.jedis)
     implementation(libs.caffeine)
     compileOnly(libs.adventure)
+    compileOnly(libs.luckperms )
 }
 

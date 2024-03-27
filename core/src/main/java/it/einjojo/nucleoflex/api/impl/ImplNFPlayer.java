@@ -10,21 +10,21 @@ import it.einjojo.nucleoflex.api.server.Server;
 import it.einjojo.nucleoflex.api.server.ServerManager;
 import it.einjojo.nucleoflex.api.world.Position;
 import it.einjojo.nucleoflex.command.AbstractCommandMessageHandler;
-import it.einjojo.nucleoflex.player.handler.PermissionHandler;
 import it.einjojo.nucleoflex.player.handler.AbstractPositionHandler;
+import it.einjojo.nucleoflex.player.handler.PermissionHandler;
+import it.einjojo.nucleoflex.player.handler.PlayerSendMessageHandler;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class ImplNFPlayer extends ImplNFOfflinePlayer implements NFPlayer { //TODO
-    protected String connectedServer;
-    protected String connectedProxy;
-
     protected final transient AbstractCommandMessageHandler commandMessageHandler;
+    protected final transient PlayerSendMessageHandler sendMessageHandler;
     protected final transient AbstractPositionHandler positionHandler;
     protected final transient ProxyServerManager proxyServerManager;
     protected final transient ServerManager serverManager;
-    protected final transient PermissionHandler permissionHandler;
+    protected String connectedServer;
+    protected String connectedProxy;
 
 
     public ImplNFPlayer(PlayerDataSnapshot dataSnapshot,
@@ -33,13 +33,15 @@ public class ImplNFPlayer extends ImplNFOfflinePlayer implements NFPlayer { //TO
                         AbstractPositionHandler positionHandler,
                         PlayerManager playerManager,
                         ProxyServerManager proxyServerManager,
-                        ServerManager serverManager, PermissionHandler permissionHandler) {
-        super(dataSnapshot, playerManager, economyManager);
+                        ServerManager serverManager,
+                        PermissionHandler permissionHandler,
+                        PlayerSendMessageHandler sendMessageHandler) {
+        super(dataSnapshot, playerManager, economyManager, permissionHandler);
         this.commandMessageHandler = commandMessageHandler;
         this.positionHandler = positionHandler;
         this.proxyServerManager = proxyServerManager;
         this.serverManager = serverManager;
-        this.permissionHandler = permissionHandler;
+        this.sendMessageHandler = sendMessageHandler;
     }
 
     @Override

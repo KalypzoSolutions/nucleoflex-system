@@ -2,6 +2,7 @@ package it.einjojo.nucleoflex.api.impl;
 
 import it.einjojo.nucleoflex.api.economy.EconomyManager;
 import it.einjojo.nucleoflex.api.player.*;
+import it.einjojo.nucleoflex.player.handler.PermissionHandler;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -11,20 +12,23 @@ import java.util.concurrent.CompletableFuture;
  * This class represents a player that is not currently online.
  */
 public class ImplNFOfflinePlayer implements NFOfflinePlayer { //TODO Implement
-    protected final PlayerManager playerManager;
-    protected final EconomyManager economyManager;
+
+    protected transient final PlayerManager playerManager;
+    protected transient final EconomyManager economyManager;
+    protected transient final PermissionHandler permissionHandler;
     private final UUID uuid;
     private final String name;
     private final long firstJoin;
     protected long lastJoin;
 
-    public ImplNFOfflinePlayer(PlayerDataSnapshot playerDataSnapshot, PlayerManager playerManager, EconomyManager economyManager) {
+    public ImplNFOfflinePlayer(PlayerDataSnapshot playerDataSnapshot, PlayerManager playerManager, EconomyManager economyManager, PermissionHandler permissionHandler) {
         this.uuid = playerDataSnapshot.uuid();
         this.name = playerDataSnapshot.name();
         this.firstJoin = playerDataSnapshot.firstJoin();
         this.lastJoin = playerDataSnapshot.lastJoin();
         this.playerManager = playerManager;
         this.economyManager = economyManager;
+        this.permissionHandler = permissionHandler;
     }
 
     @Override
@@ -39,12 +43,17 @@ public class ImplNFOfflinePlayer implements NFOfflinePlayer { //TODO Implement
 
     @Override
     public CompletableFuture<PlayerEconomy> economyAsync() {
-        return null;
+        return economyManager.playerEconomyAsync(uuid());
+    }
+
+    @Override
+    public CompletableFuture<Boolean> hasPermissionAsync(String permission) {
+        return permissionHandler.hasPermissionAsync(uuid(), permission);
     }
 
     @Override
     public boolean hasPermission(String permission) {
-        return false;
+        return permissionHandler.hasPermission(uuid(), permission);
     }
 
     @Override
