@@ -1,13 +1,52 @@
 package it.einjojo.nucleoflex.api.log;
 
-public interface LogManager {
+import java.util.concurrent.ConcurrentHashMap;
 
-    InternalLogger logger(String name);
+public class LogManager {
+    private static LogManager instance;
+    private final ConcurrentHashMap<String, InternalLogger> loggers;
+    private boolean debug;
 
-    InternalLogger logger(Class<?> clazz);
+    public LogManager() {
+        loggers = new ConcurrentHashMap<>();
+        debug = false;
+    }
 
-    void setDebug(boolean enabled);
+    public static InternalLogger getLogger(String name) {
+        return get().logger(name);
+    }
 
-    boolean debug();
+    public static InternalLogger getLogger(Class<?> clazz) {
+        return get().logger(clazz);
+    }
+
+    public static LogManager get() {
+        if (instance == null) {
+            instance = new LogManager();
+        }
+        return instance;
+    }
+
+    public InternalLogger logger(String name) {
+        InternalLogger logger = loggers.get(name);
+        if (logger == null) {
+            logger = new InternalLogger(name, debug);
+            loggers.put(name, logger);
+        }
+        return logger;
+    }
+
+    public InternalLogger logger(Class<?> clazz) {
+        return logger(clazz.getSimpleName());
+    }
+
+    public void setDebug(boolean enabled) {
+        debug = enabled;
+        loggers.values().forEach(logger -> logger.setDebug(enabled));
+    }
+
+    public boolean debug() {
+        return debug;
+    }
 
 }

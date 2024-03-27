@@ -13,8 +13,8 @@ public record ChannelReceiver(Type type, String name) {
         return new ChannelReceiver(Type.GROUP, name);
     }
 
-    public static ChannelReceiver service(String name) {
-        return new ChannelReceiver(Type.SERVICE, name);
+    public static ChannelReceiver server(String name) {
+        return new ChannelReceiver(Type.SERVER, name);
     }
 
     public static ChannelReceiver selfGroup() {
@@ -24,7 +24,7 @@ public record ChannelReceiver(Type type, String name) {
     public enum Type {
         ALL,
         GROUP,
-        SERVICE
+        SERVER
     }
 
 }

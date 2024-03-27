@@ -7,6 +7,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * This class represents a player that is not currently online.
+ */
 public class ImplNFOfflinePlayer implements NFOfflinePlayer { //TODO Implement
     protected final PlayerManager playerManager;
     protected final EconomyManager economyManager;

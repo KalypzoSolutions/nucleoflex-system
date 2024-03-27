@@ -1,12 +1,12 @@
 package it.einjojo.nucleoflex.api.impl;
 
-import it.einjojo.nucleoflex.api.broker.ChannelMessage;
-import it.einjojo.nucleoflex.api.broker.RequestException;
-import it.einjojo.nucleoflex.api.broker.RequestService;
+import it.einjojo.nucleoflex.api.broker.*;
+import it.einjojo.nucleoflex.api.log.InternalLogger;
+import it.einjojo.nucleoflex.api.log.LogManager;
+import it.einjojo.nucleoflex.api.server.Server;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -18,11 +18,16 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class AbstractRequestService implements RequestService {
     protected final String brokerName;
+    protected final Server server;
     protected final int timeout = 5000;
+    protected final InternalLogger logger = LogManager.getLogger(getClass());
+    protected final Map<String, Set<MessageProcessor>> messageProcessors = new HashMap<>();
     protected Map<String, CompletableFuture<ChannelMessage>> pendingRequests;
 
-    public AbstractRequestService(String brokerName) {
+
+    public AbstractRequestService(String brokerName, Server server) {
         this.brokerName = brokerName;
+        this.server = server;
         pendingRequests = new ConcurrentHashMap<>();
     }
 
@@ -72,9 +77,11 @@ public abstract class AbstractRequestService implements RequestService {
     protected ChannelMessage handleFutureCompletion(ChannelMessage request, @Nullable ChannelMessage response, @Nullable Throwable throwable) {
         if (throwable != null) {
             pendingRequests.remove(request.requestID());
+            logger.debug("Request failed: " + request);
             throw new RequestException(request, throwable);
         }
         pendingRequests.remove(request.requestID());
+        logger.debug("Request completed: " + request);
         return response;
     }
 
@@ -85,7 +92,8 @@ public abstract class AbstractRequestService implements RequestService {
      * @return The future of the request.
      */
     @Override
-    public CompletableFuture<ChannelMessage> getFutureOfRequest(String requestID) {
+    public @Nullable CompletableFuture<ChannelMessage> getFutureOfRequest(String requestID) {
+        if (requestID == null) return null;
         return pendingRequests.get(requestID);
     }
 
@@ -108,6 +116,70 @@ public abstract class AbstractRequestService implements RequestService {
     protected ChannelMessage applyRequestID(ChannelMessage message, String requestID) {
         return new ChannelMessage.Builder(message).requestID(requestID).build();
     }
+
+    protected void printHandlingException(MessageProcessor processor, Exception ex) {
+        logger.severe("=-=-=[ Message-Process-Exception ]=-=-=");
+        logger.severe("Error handling message with processor: " + processor.getClass().getName());
+        ex.printStackTrace();
+        logger.severe("=-=-=[ Message-Process-Exception ]=-=-=");
+    }
+
+
+    public boolean registerMessageProcessor(String channel, MessageProcessor processor) {
+        Set<MessageProcessor> processors = messageProcessors.computeIfAbsent(channel, k -> new HashSet<>());
+        return processors.add(processor);
+    }
+
+
+    public boolean unregisterMessageProcessor(String channel, MessageProcessor processor) {
+        Set<MessageProcessor> processors = messageProcessors.get(channel);
+        return processors != null && processors.remove(processor);
+    }
+
+    /**
+     * @return true if a pending request was completed, false otherwise.
+     */
+    public boolean completePendingRequest(ChannelMessage message) {
+        CompletableFuture<ChannelMessage> future = getFutureOfRequest(message.requestID());
+        if (future == null) {
+            return false;
+        }
+        future.complete(message);
+        return true;
+    }
+
+    public void forwardToProcessors(ChannelMessage message) {
+        Set<MessageProcessor> processors = messageProcessors.get(message.channel());
+        if (processors == null) {
+            logger.debug("Received message but no processors registered for channel: " + message.channel());
+            return;
+        }
+
+        for (MessageProcessor processor : processors) {
+            try {
+                logger.debug("Forwarding message (" + message.messageTypeID() + ") to processor: " + processor.getClass().getSimpleName());
+                processor.processMessage(message);
+            } catch (Exception e) {
+                printHandlingException(processor, e);
+            }
+        }
+    }
+
+    public boolean isChannelMessageForMe(ChannelMessage message) {
+        for (ChannelReceiver recipient : message.recipients()) {
+            ChannelReceiver.Type type = recipient.type();
+            String name = recipient.name();
+            if (type.equals(ChannelReceiver.Type.SERVER) && name.equals(server.serverName())) return true;
+            if (type.equals(ChannelReceiver.Type.ALL)) return true;
+            if (type.equals(ChannelReceiver.Type.GROUP) && name.equals(server.groupName())) return true;
+        }
+        return false;
+    }
+
+    public InternalLogger logger() {
+        return logger;
+    }
+
 
     @Override
     public String toString() {

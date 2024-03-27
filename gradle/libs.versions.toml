@@ -12,6 +12,7 @@ vadventure = "4.16.0"
 vguava = "33.1.0-jre"
 vgson = "2.10.1"
 vcaffeine = "3.1.8"
+vjedis = "5.0.0"
 # Wandoria Specific 
 vdialog-api = "1.2" #https://repo.wandoria.net/#/snapshots/net/wandoria/api/DialogAPI/
 
@@ -29,6 +30,7 @@ minimessage = { group = "net.kyori", name = "adventure-text-minimessage", versio
 guava = { group = "com.google.guava", name = "guava", version.ref = "vguava" }
 caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "vcaffeine" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "vgson" }
+jedis = { group = "redis.clients", name = "jedis", version.ref = "vjedis" }
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }

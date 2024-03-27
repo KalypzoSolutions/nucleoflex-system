@@ -10,18 +10,22 @@ import it.einjojo.nucleoflex.api.server.Server;
 import it.einjojo.nucleoflex.api.server.ServerManager;
 import it.einjojo.nucleoflex.api.world.Position;
 import it.einjojo.nucleoflex.command.AbstractCommandMessageHandler;
-import it.einjojo.nucleoflex.world.AbstractPositionHandler;
+import it.einjojo.nucleoflex.player.handler.PermissionHandler;
+import it.einjojo.nucleoflex.player.handler.AbstractPositionHandler;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class ImplNFPlayer extends ImplNFOfflinePlayer implements NFPlayer { //TODO
-    protected final AbstractCommandMessageHandler commandMessageHandler;
-    protected final AbstractPositionHandler positionHandler;
-    protected final ProxyServerManager proxyServerManager;
-    protected final ServerManager serverManager;
     protected String connectedServer;
     protected String connectedProxy;
+
+    protected final transient AbstractCommandMessageHandler commandMessageHandler;
+    protected final transient AbstractPositionHandler positionHandler;
+    protected final transient ProxyServerManager proxyServerManager;
+    protected final transient ServerManager serverManager;
+    protected final transient PermissionHandler permissionHandler;
+
 
     public ImplNFPlayer(PlayerDataSnapshot dataSnapshot,
                         EconomyManager economyManager,
@@ -29,12 +33,13 @@ public class ImplNFPlayer extends ImplNFOfflinePlayer implements NFPlayer { //TO
                         AbstractPositionHandler positionHandler,
                         PlayerManager playerManager,
                         ProxyServerManager proxyServerManager,
-                        ServerManager serverManager) {
+                        ServerManager serverManager, PermissionHandler permissionHandler) {
         super(dataSnapshot, playerManager, economyManager);
         this.commandMessageHandler = commandMessageHandler;
         this.positionHandler = positionHandler;
         this.proxyServerManager = proxyServerManager;
         this.serverManager = serverManager;
+        this.permissionHandler = permissionHandler;
     }
 
     @Override
@@ -81,5 +86,5 @@ public class ImplNFPlayer extends ImplNFOfflinePlayer implements NFPlayer { //TO
     @Override
     public void sendMessage(net.kyori.adventure.text.Component message) {
 
-    } //TODO: Implement
+    }
 }

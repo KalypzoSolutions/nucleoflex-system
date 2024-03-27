@@ -1,4 +1,4 @@
-package it.einjojo.nucleoflex.world;
+package it.einjojo.nucleoflex.player.handler;
 
 import com.google.common.base.Preconditions;
 import com.google.common.io.ByteArrayDataInput;
@@ -11,7 +11,6 @@ import it.einjojo.nucleoflex.api.broker.RequestService;
 import it.einjojo.nucleoflex.api.log.InternalLogger;
 import it.einjojo.nucleoflex.api.log.LogManager;
 import it.einjojo.nucleoflex.api.world.Position;
-import it.einjojo.nucleoflex.player.AbstractPlayerConnectionHandler;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -55,7 +54,7 @@ public abstract class AbstractPositionHandler implements MessageProcessor {
         ChannelMessage msg = ChannelMessage.builder()
                 .messageTypeID(POSITION_ID)
                 .content(payload.toByteArray())
-                .recipient(ChannelReceiver.service(playerServiceName)).build();
+                .recipient(ChannelReceiver.server(playerServiceName)).build();
         requestService.publishRequest(msg).whenComplete(((message, throwable) -> {
             if (throwable != null) {
                 future.completeExceptionally(throwable);

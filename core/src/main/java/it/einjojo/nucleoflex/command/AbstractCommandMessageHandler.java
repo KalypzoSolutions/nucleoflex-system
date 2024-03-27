@@ -90,7 +90,7 @@ public abstract class AbstractCommandMessageHandler implements MessageProcessor 
         if (internal.server().serverName().equals(serverName)) { // Server will not receive messages from itself
             executeCommandAsServer(command);
         } else {
-            ChannelMessage message = constructChannelMessage(command, CommandType.SERVER, serverName, ChannelReceiver.service(serverName));
+            ChannelMessage message = constructChannelMessage(command, CommandType.SERVER, serverName, ChannelReceiver.server(serverName));
             internal.brokerService().publish(message);
         }
     }
@@ -107,7 +107,7 @@ public abstract class AbstractCommandMessageHandler implements MessageProcessor 
         if (internal.server().serverName().equals(playerServerName)) { // Server will not receive messages from itself
             executeCommandAsPlayer(command, player);
         } else {
-            ChannelMessage message = constructChannelMessage(command, CommandType.PLAYER, player.toString(), ChannelReceiver.service(playerServerName));
+            ChannelMessage message = constructChannelMessage(command, CommandType.PLAYER, player.toString(), ChannelReceiver.server(playerServerName));
             internal.brokerService().publish(message);
         }
 

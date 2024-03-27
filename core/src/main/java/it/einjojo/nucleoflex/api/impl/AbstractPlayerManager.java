@@ -45,7 +45,7 @@ public abstract class AbstractPlayerManager implements PlayerManager, PlayerCont
      * @param executor The executor to run the loading task provided by caffeine cache.
      * @return A CompletableFuture that completes with the loaded player.
      */
-    abstract CompletableFuture<NFPlayer> loadPlayer(UUID uniqueId, Executor executor);
+    protected abstract CompletableFuture<NFPlayer> loadPlayer(UUID uniqueId, Executor executor);
 
     /**
      * Abstract method for loading an offline player.
@@ -54,7 +54,7 @@ public abstract class AbstractPlayerManager implements PlayerManager, PlayerCont
      * @param executor The executor to run the loading task provided by caffeine cache.
      * @return A CompletableFuture that completes with the loaded offline player.
      */
-    abstract CompletableFuture<NFOfflinePlayer> loadOfflinePlayer(UUID uniqueId, Executor executor);
+    protected abstract CompletableFuture<NFOfflinePlayer> loadOfflinePlayer(UUID uniqueId, Executor executor);
 
 
     // USING CACHE

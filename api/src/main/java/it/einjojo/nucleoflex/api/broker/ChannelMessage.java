@@ -41,13 +41,13 @@ public record ChannelMessage(
                 throw new IllegalArgumentException("Cannot respond to self");
             if (message.recipients.size() != 1)
                 throw new IllegalArgumentException("Cannot respond to a message with multiple recipients");
-            if (!message.recipients.iterator().next().type().equals(ChannelReceiver.Type.SERVICE)) {
+            if (!message.recipients.iterator().next().type().equals(ChannelReceiver.Type.SERVER)) {
                 throw new IllegalArgumentException("Cannot respond to a message with a non-service recipient.");
             }
         }
         return new Builder(message)
                 .content("")
-                .recipient(ChannelReceiver.service(message.sender().name()));
+                .recipient(ChannelReceiver.server(message.sender().name()));
     }
 
 
@@ -57,6 +57,7 @@ public record ChannelMessage(
 
     public static class Builder {
         private String messageTypeID;
+        private ChannelSender sender;
         private String channel = BrokerService.DEFAULT_CHANNEL;
         private String requestID;
         private String content = "";
@@ -68,6 +69,7 @@ public record ChannelMessage(
 
         public Builder(ChannelMessage other) {
             this.messageTypeID = other.messageTypeID();
+            this.sender = other.sender();
             this.requestID = other.requestID();
             this.channel = other.channel();
             this.content = other.content();
@@ -83,6 +85,11 @@ public record ChannelMessage(
          */
         public Builder channel(String channel) {
             this.channel = channel;
+            return this;
+        }
+
+        public Builder sender(ChannelSender sender) {
+            this.sender = sender;
             return this;
         }
 
@@ -132,7 +139,8 @@ public record ChannelMessage(
 
         public ChannelMessage build() {
             if (messageTypeID == null) throw new IllegalStateException("messageTypeID not set");
-            return new ChannelMessage(channel, messageTypeID, content, ChannelSender.self(), recipients, requestID);
+            if (sender == null) sender = ChannelSender.self();
+            return new ChannelMessage(channel, messageTypeID, content, sender , recipients, requestID);
         }
     }
 

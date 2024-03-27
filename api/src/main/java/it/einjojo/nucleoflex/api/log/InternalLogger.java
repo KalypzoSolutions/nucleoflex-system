@@ -5,20 +5,36 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.logging.Logger;
 
 @ApiStatus.Internal
-public class InternalLogger extends Logger {
-    boolean debug = true;
+public class InternalLogger {
+    private final String name;
+    private final Logger logger;
+    private boolean debug = true;
 
     public InternalLogger(String name, boolean debug) {
-        super(name, null);
+        this.name = name;
+        logger = Logger.getLogger(name, null);
         this.debug = debug;
     }
 
-    protected InternalLogger(String name, String resourceBundleName) {
-        super(name, resourceBundleName);
+
+    public void info(String message) {
+        logger.info(message);
+    }
+
+    public void severe(String message) {
+        logger.severe(message);
+    }
+
+    public void warning(String message) {
+        logger.warning(message);
+    }
+
+    public void fine(String message) {
+        logger.fine(message);
     }
 
     public void debug(String message) {
-        this.info(message);
+        if (debug) logger.info(message);
     }
 
     public void setDebug(boolean enabled) {
