@@ -1,3 +1,3 @@
 # NucleoFlex
 
-ist cool.
+ist cool, aber viel zu kompliziert-
