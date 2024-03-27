@@ -1,43 +1,41 @@
 package it.einjojo.nucleoflex.api.impl;
 
-import it.einjojo.nucleoflex.api.player.NFOfflinePlayer;
-import it.einjojo.nucleoflex.api.player.NFPlayer;
-import it.einjojo.nucleoflex.api.player.PlayerBalance;
+import it.einjojo.nucleoflex.api.economy.EconomyManager;
+import it.einjojo.nucleoflex.api.player.*;
 
-import java.lang.ref.WeakReference;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class ImplNFOfflinePlayer implements NFOfflinePlayer { //TODO Implement
+    protected final PlayerManager playerManager;
+    protected final EconomyManager economyManager;
     private final UUID uuid;
     private final String name;
     private final long firstJoin;
     protected long lastJoin;
-    protected boolean online;
 
-    protected transient WeakReference<PlayerBalance> balanceWeakReference;
-
-    public ImplNFOfflinePlayer(UUID uuid, String name, long firstJoin, long lastJoin) {
-        this.uuid = uuid;
-        this.name = name;
-        this.firstJoin = firstJoin;
-        this.lastJoin = lastJoin;
+    public ImplNFOfflinePlayer(PlayerDataSnapshot playerDataSnapshot, PlayerManager playerManager, EconomyManager economyManager) {
+        this.uuid = playerDataSnapshot.uuid();
+        this.name = playerDataSnapshot.name();
+        this.firstJoin = playerDataSnapshot.firstJoin();
+        this.lastJoin = playerDataSnapshot.lastJoin();
+        this.playerManager = playerManager;
+        this.economyManager = economyManager;
     }
 
-    //TODO
     @Override
     public Optional<NFPlayer> toPlayer() {
-        return Optional.empty();
+        return playerManager.player(uuid());
     }
 
     @Override
-    public PlayerBalance economy() {
-        return null;
+    public PlayerEconomy economy() {
+        return economyManager.playerEconomy(uuid());
     }
 
     @Override
-    public CompletableFuture<PlayerBalance> economyAsync() {
+    public CompletableFuture<PlayerEconomy> economyAsync() {
         return null;
     }
 
@@ -66,6 +64,6 @@ public class ImplNFOfflinePlayer implements NFOfflinePlayer { //TODO Implement
 
     @Override
     public boolean isOnline() {
-        return online;
+        return false;
     }
 }

@@ -1,4 +1,4 @@
-package it.einjojo.nucleoflex.server.factory;
+package it.einjojo.nucleoflex.server;
 
 import it.einjojo.nucleoflex.api.server.Server;
 

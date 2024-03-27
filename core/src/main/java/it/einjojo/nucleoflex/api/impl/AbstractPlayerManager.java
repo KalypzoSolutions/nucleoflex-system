@@ -6,13 +6,13 @@ import it.einjojo.nucleoflex.api.player.NFOfflinePlayer;
 import it.einjojo.nucleoflex.api.player.NFPlayer;
 import it.einjojo.nucleoflex.api.player.PlayerContainerManager;
 import it.einjojo.nucleoflex.api.player.PlayerManager;
+import it.einjojo.nucleoflex.player.AbstractPlayerFactory;
 import it.einjojo.nucleoflex.player.PlayerNameCache;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 
@@ -23,6 +23,8 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractPlayerManager implements PlayerManager, PlayerContainerManager {
 
     protected final PlayerNameCache playerNameCache;
+    protected final AbstractPlayerFactory playerFactory;
+
     protected final AsyncLoadingCache<UUID, NFPlayer> onlinePlayerCache = Caffeine.newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
             .buildAsync(this::loadPlayer);
@@ -31,8 +33,9 @@ public abstract class AbstractPlayerManager implements PlayerManager, PlayerCont
             .buildAsync(this::loadOfflinePlayer);
 
 
-    protected AbstractPlayerManager(PlayerNameCache playerNameCache) {
+    protected AbstractPlayerManager(PlayerNameCache playerNameCache, AbstractPlayerFactory playerFactory) {
         this.playerNameCache = playerNameCache;
+        this.playerFactory = playerFactory;
     }
 
     /**

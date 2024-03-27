@@ -1,7 +1,10 @@
 package it.einjojo.nucleoflex.api.player;
 
 
-public interface PlayerBalance {
+import java.util.UUID;
+
+public interface PlayerEconomy {
+    UUID playerUuid();
     /**
      * @return the balance of the player.
      */

@@ -5,6 +5,16 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Eine Nachricht, die über den BrokerService versendet wird. Sie enthält den Inhalt, den Sender, die Empfänger und den Kanal.
+ *
+ * @param channel       Der Kanal, über den die Nachricht gesendet wird.
+ * @param messageTypeID Die ID des Nachrichtentyps, welche zum Identifizieren der Nachricht genutzt wird.
+ * @param content       Der Inhalt der Nachricht. Das kann ein JSON-String sein, oder ein einfacher Text, oder eine UUID.
+ * @param sender        Der Sender der Nachricht.
+ * @param recipients    Die Empfänger der Nachricht.
+ * @param requestID     Wird beim Senden einer Anfrage gesetzt und bei der Antwort übernommen.
+ */
 public record ChannelMessage(
         String channel,
         String messageTypeID,
@@ -19,21 +29,36 @@ public record ChannelMessage(
     }
 
     public static Builder responseTo(ChannelMessage message) {
-        if (message.sender().equals(ChannelSender.self()))
-            throw new IllegalArgumentException("Cannot respond to self");
+        return responseTo(message, false);
+    }
+
+    @ApiStatus.Internal
+    public static Builder responseTo(ChannelMessage message, boolean ignoreChecks) {
+        if (!ignoreChecks) {
+            if (!message.isRequest())
+                throw new IllegalArgumentException("Cannot respond to a message that is not a request");
+            if (message.sender().equals(ChannelSender.self()))
+                throw new IllegalArgumentException("Cannot respond to self");
+            if (message.recipients.size() != 1)
+                throw new IllegalArgumentException("Cannot respond to a message with multiple recipients");
+            if (!message.recipients.iterator().next().type().equals(ChannelReceiver.Type.SERVICE)) {
+                throw new IllegalArgumentException("Cannot respond to a message with a non-service recipient.");
+            }
+        }
         return new Builder(message)
                 .content("")
                 .recipient(ChannelReceiver.service(message.sender().name()));
     }
 
-    boolean isRequest() {
+
+    public boolean isRequest() {
         return requestID != null && !requestID.isEmpty();
     }
 
     public static class Builder {
+        private String messageTypeID;
+        private String channel = BrokerService.DEFAULT_CHANNEL;
         private String requestID;
-        private String channel;
-        private String messageTypeID = "";
         private String content = "";
         private Collection<ChannelReceiver> recipients = List.of(ChannelReceiver.all());
 
@@ -78,6 +103,11 @@ public record ChannelMessage(
             return this;
         }
 
+        public Builder content(byte[] content) {
+            this.content = new String(content);
+            return this;
+        }
+
 
         public Builder recipient(ChannelReceiver recipient) {
             this.recipients = List.of(recipient);
@@ -101,6 +131,7 @@ public record ChannelMessage(
         }
 
         public ChannelMessage build() {
+            if (messageTypeID == null) throw new IllegalStateException("messageTypeID not set");
             return new ChannelMessage(channel, messageTypeID, content, ChannelSender.self(), recipients, requestID);
         }
     }

@@ -3,6 +3,7 @@ package it.einjojo.nucleoflex.api.impl;
 import it.einjojo.nucleoflex.api.broker.ChannelMessage;
 import it.einjojo.nucleoflex.api.broker.RequestException;
 import it.einjojo.nucleoflex.api.broker.RequestService;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.UUID;
@@ -42,18 +43,19 @@ public abstract class AbstractRequestService implements RequestService {
      * @param originalMessage The message to be published.
      * @param timeout         The timeout for the request.
      * @return A CompletableFuture that will complete when the request is responded to or the timeout is reached.
+     * @throws RequestException If the request fails.
      */
     @Override
     public CompletableFuture<ChannelMessage> publishRequest(ChannelMessage originalMessage, long timeout) {
         var message = applyRequestID(originalMessage, generateRequestID());
         var future = new CompletableFuture<ChannelMessage>();
         future.orTimeout(timeout, TimeUnit.MILLISECONDS);
-        future.handle(this::handleFutureCompletion);
+        future.handle((response, throwable) -> handleFutureCompletion(message, response, throwable));
         try {
             publish(message);
             pendingRequests.put(message.requestID(), future);
         } catch (Exception e) {
-            future.completeExceptionally(e);
+            future.completeExceptionally(e); // will be caught by handleFutureCompletion and rethrown
         }
         return future;
     }
@@ -62,17 +64,18 @@ public abstract class AbstractRequestService implements RequestService {
     /**
      * Handles the completion of a future.
      *
-     * @param message   The message that was sent with the request.
+     * @param request   The message that was sent with the request.
+     * @param response  The response that was received, if any.
      * @param throwable The exception that was thrown, if any.
      * @return The message that was sent with the request.
      */
-    protected ChannelMessage handleFutureCompletion(ChannelMessage message, Throwable throwable) {
+    protected ChannelMessage handleFutureCompletion(ChannelMessage request, @Nullable ChannelMessage response, @Nullable Throwable throwable) {
         if (throwable != null) {
-            pendingRequests.remove(message.requestID());
-            throw new RequestException(throwable);
+            pendingRequests.remove(request.requestID());
+            throw new RequestException(request, throwable);
         }
-        pendingRequests.remove(message.requestID());
-        return message;
+        pendingRequests.remove(request.requestID());
+        return response;
     }
 
     /**

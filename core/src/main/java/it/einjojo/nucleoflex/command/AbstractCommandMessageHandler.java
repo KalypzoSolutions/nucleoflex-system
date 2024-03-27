@@ -8,6 +8,7 @@ import it.einjojo.nucleoflex.api.InternalAPI;
 import it.einjojo.nucleoflex.api.broker.ChannelMessage;
 import it.einjojo.nucleoflex.api.broker.ChannelReceiver;
 import it.einjojo.nucleoflex.api.broker.MessageProcessor;
+import it.einjojo.nucleoflex.api.log.InternalLogger;
 
 import java.util.UUID;
 
@@ -15,10 +16,12 @@ import java.util.UUID;
 public abstract class AbstractCommandMessageHandler implements MessageProcessor {
     public static final String COMMAND_MESSAGE_ID = "cmd";
     private final InternalAPI internal;
+    private final InternalLogger logger;
     protected boolean registered;
 
     protected AbstractCommandMessageHandler(InternalAPI internal) {
         this.internal = internal;
+        logger = internal.logManager().logger("CommandMessageHandler");
         register();
     }
 
@@ -54,9 +57,9 @@ public abstract class AbstractCommandMessageHandler implements MessageProcessor 
         payload.writeUTF(target);
         payload.writeUTF(command);
         return ChannelMessage.builder()
-                .channel(internal.server().serverName())
+                .channel(processingChannel())
                 .messageTypeID(COMMAND_MESSAGE_ID)
-                .content(new String(payload.toByteArray()))
+                .content(payload.toByteArray())
                 .recipient(receiver).build();
 
     }
@@ -68,7 +71,7 @@ public abstract class AbstractCommandMessageHandler implements MessageProcessor 
      * @param command   the command to send
      */
     public void sendGroupCommand(String groupName, String command) {
-
+        logger.debug("Executing command: " + command + " on group: " + groupName);
         ChannelMessage message = constructChannelMessage(command, CommandType.GROUP, groupName, ChannelReceiver.group(groupName));
         internal.brokerService().publish(message);
         if (internal.server().groupName().equals(groupName)) {
@@ -83,6 +86,7 @@ public abstract class AbstractCommandMessageHandler implements MessageProcessor 
      * @param command    the command to send
      */
     public void sendServerCommand(String serverName, String command) {
+        logger.debug("Executing command: " + command + " on server: " + serverName);
         if (internal.server().serverName().equals(serverName)) { // Server will not receive messages from itself
             executeCommandAsServer(command);
         } else {
@@ -99,6 +103,7 @@ public abstract class AbstractCommandMessageHandler implements MessageProcessor 
      * @param command          the command to send
      */
     public void sendPlayerCommand(UUID player, String playerServerName, String command) {
+        logger.debug("Executing command: " + command + " as player: " + player.toString() + " on server: " + playerServerName);
         if (internal.server().serverName().equals(playerServerName)) { // Server will not receive messages from itself
             executeCommandAsPlayer(command, player);
         } else {
@@ -117,6 +122,7 @@ public abstract class AbstractCommandMessageHandler implements MessageProcessor 
      * @param target  the target of the command
      */
     protected void processCommand(String command, CommandType type, String target) {
+        logger.debug("Processing command: " + command + " type: " + type + " target: " + target);
         switch (type) {
             case GROUP, SERVER:
                 executeCommandAsServer(command);

@@ -1,7 +1,7 @@
 package it.einjojo.nucleoflex.api.world;
 
 /**
- * Represents a position in the world.
+ * Represents a position in the world on a server or server group .
  */
 public record Position(double x, double y, double z, double pitch, double yaw, String worldName,
                        Type type, String referenceName) {
@@ -14,12 +14,28 @@ public record Position(double x, double y, double z, double pitch, double yaw, S
                 .worldName(worldName);
     }
 
+
     public static Builder builder() {
         return new DefaultPositionBuilder();
     }
 
     public Builder toBuilder() {
         return new DefaultPositionBuilder(this);
+    }
+
+    public enum Type {
+        /**
+         * The position belongs to a specific server
+         */
+        SERVER,
+        /**
+         * The position belongs to a server group
+         */
+        GROUP,
+        /**
+         * It does not matter on which server the player is.
+         */
+        UNSPECIFIED,
     }
 
     public interface Builder {
@@ -40,21 +56,6 @@ public record Position(double x, double y, double z, double pitch, double yaw, S
         Builder groupSpecific(String groupName);
 
         Position build();
-    }
-
-    public enum Type {
-        /**
-         * The position belongs to a specific server
-         */
-        SERVER,
-        /**
-         * The position belongs to a server group
-         */
-        GROUP,
-        /**
-         * It does not matter on which server the player is.
-         */
-        UNSPECIFIED,
     }
 
 

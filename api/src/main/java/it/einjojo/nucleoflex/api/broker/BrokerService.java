@@ -1,9 +1,13 @@
 package it.einjojo.nucleoflex.api.broker;
 
+import org.jetbrains.annotations.ApiStatus;
+
 /**
  * This interface represents a service that can connect to a broker and publish/subscribe to channels.
  */
 public interface BrokerService {
+    public final String DEFAULT_CHANNEL = "default";
+
     /**
      * @return the name of the broker
      */
@@ -35,24 +39,40 @@ public interface BrokerService {
     void unsubscribe(String channel);
 
 
+    default boolean registerMessageProcessor(MessageProcessor processor) {
+        return registerMessageProcessor(processor.processingChannel(), processor);
+    }
+
     /**
      * Register a processor to process messages received from the broker
      *
      * @param processor the processor to register
      */
-    void registerMessageProcessor(MessageProcessor processor);
+    boolean registerMessageProcessor(String channel, MessageProcessor processor);
+
 
     /**
-     * Disconnect from the broker
+     * Unregister a processor
      *
      * @param processor the processor to unregister
      * @return true if the processor was unregistered, false otherwise
      */
-    boolean unregisterMessageProcessor(MessageProcessor processor);
+    default boolean unregisterMessageProcessor(MessageProcessor processor) {
+        return unregisterMessageProcessor(processor.processingChannel(), processor);
+    }
+
+    /**
+     * Unregister a processor
+     *
+     * @param processor the processor to unregister
+     * @return true if the processor was unregistered, false otherwise
+     */
+    boolean unregisterMessageProcessor(String channel, MessageProcessor processor);
 
     /**
      * @param message the message to forward to the processors
      */
+    @ApiStatus.Internal
     void forwardToProcessors(ChannelMessage message);
 
 

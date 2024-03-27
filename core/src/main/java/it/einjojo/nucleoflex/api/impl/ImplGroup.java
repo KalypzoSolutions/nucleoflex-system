@@ -7,6 +7,7 @@ import it.einjojo.nucleoflex.api.player.PlayerContainerManager;
 import it.einjojo.nucleoflex.api.server.Group;
 import it.einjojo.nucleoflex.api.server.NetworkManager;
 import it.einjojo.nucleoflex.api.server.Server;
+import it.einjojo.nucleoflex.api.server.ServerManager;
 import it.einjojo.nucleoflex.command.AbstractCommandMessageHandler;
 
 import java.util.Collection;
@@ -18,15 +19,15 @@ public class ImplGroup implements Group {
     private final String groupName;
     private final Set<String> servers;
     private final PlayerContainerManager playerContainerManager;
-    private final NetworkManager networkManager;
+    private final ServerManager serverManager;
     private final AbstractCommandMessageHandler commandMessageHandler;
 
 
-    public ImplGroup(String groupName, Set<String> servers, PlayerContainerManager playerContainerManager, NetworkManager networkManager, AbstractCommandMessageHandler commandHandler) {
+    public ImplGroup(String groupName, Set<String> servers, PlayerContainerManager playerContainerManager, ServerManager serverManager, AbstractCommandMessageHandler commandHandler) {
         this.groupName = groupName;
         this.servers = servers;
         this.playerContainerManager = playerContainerManager;
-        this.networkManager = networkManager;
+        this.serverManager = serverManager;
         this.commandMessageHandler = commandHandler;
     }
 
@@ -46,7 +47,7 @@ public class ImplGroup implements Group {
         final Server[] serverArray = new Server[servers.size()];
         int index = 0;
         for (String serverName : servers) {
-            Optional<Server> optionalServer = networkManager.serverByName(serverName);
+            Optional<Server> optionalServer = serverManager.serverByName(serverName);
             if (optionalServer.isPresent()) {
                 serverArray[index] = optionalServer.get();
                 index++;

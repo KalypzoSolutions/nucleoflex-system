@@ -1,9 +1,8 @@
 package it.einjojo.nucleoflex.api.impl;
 
-import it.einjojo.nucleoflex.api.server.Server;
 import it.einjojo.nucleoflex.api.server.NetworkManager;
-import it.einjojo.nucleoflex.server.factory.GroupFactory;
-import it.einjojo.nucleoflex.server.factory.ServerFactory;
+import it.einjojo.nucleoflex.server.GroupFactory;
+import it.einjojo.nucleoflex.server.ServerFactory;
 
 /**
  * This abstract class provides a base for implementing the ServerNetworkManager interface.
