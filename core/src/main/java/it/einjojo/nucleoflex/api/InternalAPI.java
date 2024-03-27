@@ -8,7 +8,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
 public interface InternalAPI extends NucleoFlexAPI {
-    PlayerContainerManager playerContainerManager();
+
 
     PlayerNameCache playerNameCache();
 

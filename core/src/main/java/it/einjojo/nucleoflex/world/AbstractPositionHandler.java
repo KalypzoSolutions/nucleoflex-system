@@ -11,26 +11,31 @@ import it.einjojo.nucleoflex.api.broker.RequestService;
 import it.einjojo.nucleoflex.api.log.InternalLogger;
 import it.einjojo.nucleoflex.api.log.LogManager;
 import it.einjojo.nucleoflex.api.world.Position;
+import it.einjojo.nucleoflex.player.AbstractPlayerConnectionHandler;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class AbstractPositionHandler implements MessageProcessor {
-    private static final String MSG_ID = "pos";
+    private static final String POSITION_ID = "pos"; // ID for position requests
+    private static final String TELEPORT_ID = "tp"; // ID for teleport requests
     private final RequestService requestService;
+    private final AbstractPlayerConnectionHandler playerConnectionHandler;
     private final InternalLogger logger;
 
-    protected AbstractPositionHandler(RequestService requestService, LogManager logManager) {
+    protected AbstractPositionHandler(RequestService requestService, AbstractPlayerConnectionHandler playerConnectionHandler, LogManager logManager) {
         this.requestService = requestService;
+        this.playerConnectionHandler = playerConnectionHandler;
         this.logger = logManager.logger(getClass());
     }
 
     @Override
     public void processMessage(ChannelMessage message) {
-        if (!message.messageTypeID().equals(MSG_ID)) return;
-        String payload = message.content();
-        ByteArrayDataInput input = ByteStreams.newDataInput(payload.getBytes());
+        if (message.messageTypeID().equals(POSITION_ID)) {
+            String payload = message.content();
+            ByteArrayDataInput input = ByteStreams.newDataInput(payload.getBytes());
 
+        }
     }
 
     /**
@@ -48,7 +53,7 @@ public abstract class AbstractPositionHandler implements MessageProcessor {
         ByteArrayDataOutput payload = ByteStreams.newDataOutput();
         payload.writeUTF(playerUUID.toString());
         ChannelMessage msg = ChannelMessage.builder()
-                .messageTypeID(MSG_ID)
+                .messageTypeID(POSITION_ID)
                 .content(payload.toByteArray())
                 .recipient(ChannelReceiver.service(playerServiceName)).build();
         requestService.publishRequest(msg).whenComplete(((message, throwable) -> {
@@ -56,11 +61,22 @@ public abstract class AbstractPositionHandler implements MessageProcessor {
                 future.completeExceptionally(throwable);
                 return;
             }
-
         }));
-
         return future;
     }
 
+    public void teleport(UUID player, Position target) {
+        switch (target.type()) {
+            case SERVER:
 
+                break;
+            case GROUP:
+
+                break;
+            case UNSPECIFIED:
+
+            default:
+                throw new IllegalStateException("Unexpected value: " + target.type());
+        }
+    }
 }
