@@ -23,6 +23,18 @@ public interface ServerManager {
     Collection<Server> servers();
 
     /**
+     * @param serverNames the names of the servers
+     * @return the servers with the given names
+     */
+    Collection<Server> servers(String... serverNames);
+
+    /**
+     * @param serverNames the names of the servers
+     * @return the servers with the given names
+     */
+    CompletableFuture<Collection<Server>> serversAsync(String... serverNames);
+
+    /**
      * @return the servers
      */
     CompletableFuture<Collection<Server>> serversAsync();

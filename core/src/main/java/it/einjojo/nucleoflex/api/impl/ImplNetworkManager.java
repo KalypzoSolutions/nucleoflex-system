@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
  * NetworkManager implementation
  * <p> This class is responsible for managing the network, including servers, proxies, and groups. </p>
  */
-public abstract class ImplNetworkManager implements NetworkManager {
+public class ImplNetworkManager implements NetworkManager {
     private final JedisPool pool;
     private final ServerFactory serverFactory;
     private final GroupFactory groupFactory;
@@ -185,6 +185,25 @@ public abstract class ImplNetworkManager implements NetworkManager {
         } catch (Exception e) {
             logger.severe("Error while unregistering server: " + e.getMessage());
         }
+    }
+
+    @Override
+    public Collection<Server> servers(String... serverNames) {
+        LinkedList<Server> servers = new LinkedList<>();
+        try (Jedis jedis = pool.getResource()) {
+            for (String serverName : serverNames) {
+                String serverGroup = jedis.get(REDIS_PREFIX.SERVERS + serverName);
+                servers.add(serverFactory.createServer(serverName, serverGroup));
+            }
+        } catch (Exception e) {
+            logger.severe("Error while fetching servers: " + e.getMessage());
+        }
+        return servers;
+    }
+
+    @Override
+    public CompletableFuture<Collection<Server>> serversAsync(String... serverNames) {
+        return CompletableFuture.supplyAsync(() -> servers(serverNames));
     }
 
     public interface REDIS_PREFIX {

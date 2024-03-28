@@ -3,6 +3,7 @@ package it.einjojo.nucleoflex.api.server;
 import it.einjojo.nucleoflex.api.player.PlayerContainer;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Server interface
@@ -23,6 +24,8 @@ public interface Server extends PlayerContainer {
      * @return the group to which the server belongs
      */
     Group group();
+
+    CompletableFuture<Group> groupAsync();
 
     /**
      * Connects a player to the server

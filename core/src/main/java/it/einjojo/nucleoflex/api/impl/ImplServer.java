@@ -1,6 +1,5 @@
 package it.einjojo.nucleoflex.api.impl;
 
-import com.google.common.base.Preconditions;
 import it.einjojo.nucleoflex.api.player.NFPlayer;
 import it.einjojo.nucleoflex.api.player.PlayerContainer;
 import it.einjojo.nucleoflex.api.player.PlayerContainerManager;
@@ -12,6 +11,7 @@ import it.einjojo.nucleoflex.player.handler.AbstractPlayerConnectionHandler;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class ImplServer implements Server {
 
@@ -44,6 +44,11 @@ public class ImplServer implements Server {
     @Override
     public Group group() {
         return groupManager.groupByName(groupName).orElseThrow();
+    }
+
+    @Override
+    public CompletableFuture<Group> groupAsync() {
+        return groupManager.groupByNameAsync(groupName).thenApply(Optional::orElseThrow);
     }
 
     @Override

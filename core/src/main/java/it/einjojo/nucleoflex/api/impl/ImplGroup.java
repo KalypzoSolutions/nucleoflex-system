@@ -5,7 +5,6 @@ import it.einjojo.nucleoflex.api.player.NFPlayer;
 import it.einjojo.nucleoflex.api.player.PlayerContainer;
 import it.einjojo.nucleoflex.api.player.PlayerContainerManager;
 import it.einjojo.nucleoflex.api.server.Group;
-import it.einjojo.nucleoflex.api.server.NetworkManager;
 import it.einjojo.nucleoflex.api.server.Server;
 import it.einjojo.nucleoflex.api.server.ServerManager;
 import it.einjojo.nucleoflex.command.AbstractCommandMessageHandler;
@@ -14,6 +13,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class ImplGroup implements Group {
     private final String groupName;
@@ -43,19 +43,13 @@ public class ImplGroup implements Group {
     }
 
     @Override
+    public CompletableFuture<Collection<Server>> serversAsync() {
+        return serverManager.serversAsync(servers.toArray(new String[0]));
+    }
+
+    @Override
     public Collection<Server> servers() {
-        final Server[] serverArray = new Server[servers.size()];
-        int index = 0;
-        for (String serverName : servers) {
-            Optional<Server> optionalServer = serverManager.serverByName(serverName);
-            if (optionalServer.isPresent()) {
-                serverArray[index] = optionalServer.get();
-                index++;
-            } else {
-                throw new IllegalStateException("Server " + serverName + " is not present in the network but is in group!");
-            }
-        }
-        return ImmutableSet.copyOf(serverArray);
+        return serverManager.servers(servers.toArray(new String[0]));
     }
 
     @Override
