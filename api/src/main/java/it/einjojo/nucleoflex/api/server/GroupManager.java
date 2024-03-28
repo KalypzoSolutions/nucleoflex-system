@@ -26,9 +26,4 @@ public interface GroupManager {
      * @return the registered groups
      */
     CompletableFuture<Collection<Group>> groupAsync();
-
-    void registerGroup(String groupName);
-    void unregisterGroup(String groupName);
-    boolean isGroupRegistered(String groupName);
-
 }

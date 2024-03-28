@@ -26,4 +26,8 @@ public interface ServerManager {
      * @return the servers
      */
     CompletableFuture<Collection<Server>> serversAsync();
+
+    void registerServer(Server server);
+
+    void unregisterServer(String serverName);
 }
