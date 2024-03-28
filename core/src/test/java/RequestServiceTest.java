@@ -17,7 +17,7 @@ public class RequestServiceTest implements MessageProcessor{
 
     public RequestServiceTest() {
         this.pool = new JedisPoolFactory().createJedisPool(new TestRedisCredentials());
-        ServerFactory serverFactory = new DummyServerFactory();
+        ServerFactory serverFactory = new NullServerFactory();
         server1 = serverFactory.createServer("server1", "server");
         server2 = serverFactory.createServer("server2", "server");
     }
