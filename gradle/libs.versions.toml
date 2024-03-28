@@ -2,7 +2,7 @@
 # APIs
 vpaper-api = "1.19.4-R0.1-SNAPSHOT"
 vvelcoity-api = "3.3.0-SNAPSHOT"
-vwaterfall-api = "1.20-R0.1-SNAPSHOT"
+vwaterfall-api = "1.20-R0.3-SNAPSHOT"
 vfawe-bom = "1.42"
 voraxen = "1.168.0"
 vhusksync = "3.3.1"
