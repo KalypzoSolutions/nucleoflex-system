@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import it.einjojo.nucleoflex.api.broker.ChannelMessage;
 import it.einjojo.nucleoflex.api.impl.AbstractRequestService;
 import it.einjojo.nucleoflex.api.server.Server;
+import it.einjojo.nucleoflex.util.ServiceUtil;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -57,7 +58,7 @@ public class RedisRequestService extends AbstractRequestService {
         pubSub.unsubscribe();
         jedis.close(); // return to pool
         jedis = null;
-        pubSubService.close(); // shutdown
+        ServiceUtil.close(pubSubService);
         connected = false;
         logger.info("Disconnected from redis pub sub service");
     }
