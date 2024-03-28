@@ -73,7 +73,7 @@ public class RedisRequestService extends AbstractRequestService {
 
     @Override
     public void subscribe(String channel) {
-        subscribedChannels.add(channel);
+        if (!subscribedChannels.add(channel)) return; // Already subscribed
         if (!connected) {
             connect(); // When connecting to redis, it will automatically subscribe to the channels provided in set
         } else {

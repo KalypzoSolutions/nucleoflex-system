@@ -8,24 +8,24 @@ public interface PlayerEconomy {
     /**
      * @return the balance of the player.
      */
-    double balance();
+    long balance();
 
     /**
      * @param amount the amount to set the balance to.
      * @throws IllegalArgumentException if the amount is negative.
      */
-    void setBalance(double amount);
+    void setBalance(long amount);
 
     /**
      * @param amount the amount to add to the balance.
      * @throws IllegalArgumentException if the amount is negative.
      */
-    void addBalance(double amount);
+    void addBalance(long amount);
 
     /**
      * @param player the player to remove the balance from.
      * @param amount the amount to remove from the balance.
      * @throws IllegalArgumentException if the amount is negative.
      */
-    void removeBalance(String player, double amount);
+    void removeBalance(String player, long amount);
 }
