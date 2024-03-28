@@ -55,7 +55,6 @@ public class ImplEconomyManager implements EconomyManager, PlayerEconomyObserver
     public void update(PlayerEconomy playerEconomy) {
         try {
             storage.updateEconomy(playerEconomy);
-            loadedEconomies.synchronous().invalidate(playerEconomy.playerUuid());
             publishChange(playerEconomy); // Tell servers, who loaded economy before update reached database, about the change
         } catch (Exception ex) {
             logger.severe("Error while updating player economy: " + ex.getMessage());
@@ -79,8 +78,14 @@ public class ImplEconomyManager implements EconomyManager, PlayerEconomyObserver
         return loadedEconomies.get(player);
     }
 
+    /**
+     * Observer Method to publish a change in a player economy to all servers
+     *
+     * @param playerEconomy the player economy to publish
+     */
     @Override
     public void publishChange(PlayerEconomy playerEconomy) {
+        transactionLogger.log(playerEconomy.playerUuid(), ((ImplPlayerEconomy) playerEconomy).lastDelta());
         ByteArrayDataOutput payload = ByteStreams.newDataOutput();
         payload.writeUTF(playerEconomy.playerUuid().toString());
         payload.writeLong(playerEconomy.balance());
@@ -96,7 +101,6 @@ public class ImplEconomyManager implements EconomyManager, PlayerEconomyObserver
     @Override
     public void unload(UUID player) {
         loadedEconomies.synchronous().invalidate(player);
-
     }
 
     @Override

@@ -6,7 +6,7 @@ import it.einjojo.nucleoflex.api.player.PlayerContainerManager;
 import it.einjojo.nucleoflex.api.server.Group;
 import it.einjojo.nucleoflex.api.server.GroupManager;
 import it.einjojo.nucleoflex.api.server.Server;
-import it.einjojo.nucleoflex.player.handler.AbstractPlayerConnectionHandler;
+import it.einjojo.nucleoflex.player.handler.PlayerConnectionHandler;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -19,10 +19,10 @@ public class ImplServer implements Server {
     private final String groupName;
 
     private final transient GroupManager groupManager;
-    private final transient AbstractPlayerConnectionHandler playerConnectionHandler;
+    private final transient PlayerConnectionHandler playerConnectionHandler;
     private final transient PlayerContainerManager playerContainerManager;
 
-    public ImplServer(String serverName, String groupName, GroupManager groupManager, AbstractPlayerConnectionHandler playerConnectionHandler, PlayerContainerManager playerContainerManager) {
+    public ImplServer(String serverName, String groupName, GroupManager groupManager, PlayerConnectionHandler playerConnectionHandler, PlayerContainerManager playerContainerManager) {
         this.serverName = serverName;
         this.groupName = groupName;
         this.groupManager = groupManager;

@@ -1,8 +1,8 @@
 package it.einjojo.nucleoflex.api;
 
 import it.einjojo.nucleoflex.api.broker.BrokerService;
+import it.einjojo.nucleoflex.api.broker.RequestService;
 import it.einjojo.nucleoflex.api.log.LogManager;
-import it.einjojo.nucleoflex.api.player.PlayerContainerManager;
 import it.einjojo.nucleoflex.command.AbstractCommandMessageHandler;
 import it.einjojo.nucleoflex.player.PlayerNameCache;
 import it.einjojo.nucleoflex.server.GroupFactory;
@@ -19,13 +19,13 @@ public interface InternalAPI extends NucleoFlexAPI {
 
     BrokerService brokerService();
 
+    RequestService requestService();
+
     ServerFactory serverFactory();
 
     GroupFactory groupFactory();
 
     AbstractCommandMessageHandler commandMessageHandler();
-
-
 
 
 }

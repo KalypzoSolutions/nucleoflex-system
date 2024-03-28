@@ -82,7 +82,7 @@ public class ImplNFPlayer extends ImplNFOfflinePlayer implements NFPlayer { //TO
 
     @Override
     public void teleport(Position position) {
-        positionHandler.teleport(uuid(), position);
+        positionHandler.teleport(this, position);
     }
 
     @Override
