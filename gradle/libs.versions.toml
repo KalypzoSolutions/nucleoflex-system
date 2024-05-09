@@ -13,7 +13,7 @@ vluckperms = "5.4"
 # Libraries
 vpacketevents = "2.2.1"
 vlitecommands = "3.2.0"
-vadventure = "4.16.0"
+vadventure = "4.17.0"
 vguava = "33.1.0-jre"
 vgson = "2.10.1"
 vcaffeine = "3.1.8"
