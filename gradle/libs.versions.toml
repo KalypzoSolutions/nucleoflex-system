@@ -17,7 +17,7 @@ vadventure = "4.16.0"
 vguava = "33.1.0-jre"
 vgson = "2.10.1"
 vcaffeine = "3.1.8"
-vjedis = "5.1.0"
+vjedis = "5.2.0"
 
 # Wandoria Specific
 vdialog-api = "1.2" #https://repo.wandoria.net/#/snapshots/net/wandoria/api/DialogAPI/
